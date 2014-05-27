@@ -1,0 +1,8 @@
+# IntelliJ IDEA project files
+.idea
+*.ipr
+*.iml
+*.iws
+
+# Vagrant VM status files
+.vagrant
