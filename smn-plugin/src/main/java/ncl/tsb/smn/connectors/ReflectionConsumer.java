@@ -11,11 +11,11 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SimpleDataConsumer<T> implements DataConsumer<T> {
-	private static final Logger logger = Logger.getLogger(SimpleDataConsumer.class.getName());
+public class ReflectionConsumer<T> implements DataConsumer<T> {
+	private static final Logger logger = Logger.getLogger(ReflectionConsumer.class.getName());
 
-	public SimpleDataConsumer(DataFlowNode dataFlowNode, Method method) {
-		logger.fine("SimpleDataConsumer: " + dataFlowNode + ", " + method);
+	public ReflectionConsumer(DataFlowNode dataFlowNode, Method method) {
+		logger.fine("ReflectionConsumer: " + dataFlowNode + ", " + method);
 
 		_dataFlowNode = dataFlowNode;
 		_method = method;

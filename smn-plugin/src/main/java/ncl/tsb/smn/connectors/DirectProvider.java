@@ -13,11 +13,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SimpleDataProvider<T> implements DataProvider<T> {
-	private static final Logger logger = Logger.getLogger(SimpleDataProvider.class.getName());
+public class DirectProvider<T> implements DataProvider<T> {
+	private static final Logger logger = Logger.getLogger(DirectProvider.class.getName());
 
-	public SimpleDataProvider(DataFlowNode dataFlowNode) {
-		logger.fine("SimpleDataProvider: " + dataFlowNode);
+	public DirectProvider(DataFlowNode dataFlowNode) {
+		logger.fine("DirectProvider: " + dataFlowNode);
 
 		_dataFlowNode = dataFlowNode;
 		_dataConsumers = new LinkedList<>();

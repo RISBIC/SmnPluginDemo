@@ -6,8 +6,8 @@ package ncl.tsb.smn.dataflow;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataProcessor;
 import com.arjuna.databroker.data.DataProvider;
-import ncl.tsb.smn.connectors.SimpleDataConsumer;
-import ncl.tsb.smn.connectors.SimpleDataProvider;
+import ncl.tsb.smn.connectors.DirectProvider;
+import ncl.tsb.smn.connectors.ReflectionConsumer;
 import ncl.tsb.smn.data.SmnRecord;
 
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ public class SmnDataProcessor implements DataProcessor {
 		_name = name;
 		_properties = properties;
 
-		_dataConsumer = new SimpleDataConsumer<>(this, MethodUtil.getMethod(SmnDataProcessor.class, "process", SmnRecord.class));
-		_dataProvider = new SimpleDataProvider<>(this);
+		_dataConsumer = new ReflectionConsumer<>(this, MethodUtil.getMethod(SmnDataProcessor.class, "process", SmnRecord.class));
+		_dataProvider = new DirectProvider<>(this);
 	}
 
 	@Override

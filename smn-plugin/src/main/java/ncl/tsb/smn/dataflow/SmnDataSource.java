@@ -5,7 +5,7 @@ package ncl.tsb.smn.dataflow;
 
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
-import ncl.tsb.smn.connectors.SimpleDataProvider;
+import ncl.tsb.smn.connectors.DirectProvider;
 import ncl.tsb.smn.data.SmnRecord;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class SmnDataSource implements DataSource {
 		_name = name;
 		_properties = properties;
 
-		_dataProvider = new SimpleDataProvider<>(this);
+		_dataProvider = new DirectProvider<>(this);
 	}
 
 	@Override
