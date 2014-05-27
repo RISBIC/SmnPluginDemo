@@ -15,10 +15,10 @@ import com.arjuna.databroker.data.DataFlowNodeFactoryInventory;
 
 @Startup
 @Singleton
-public class SimpleDataFlowNodeFactoriesSetup {
+public class SmnDataFlowNodeFactoriesSetup {
 	@PostConstruct
 	public void setup() {
-		DataFlowNodeFactory simpleDataFlowNodeFactory = new SimpleDataFlowNodeFactory("Simple Data Source Factory", Collections.<String, String>emptyMap());
+		DataFlowNodeFactory simpleDataFlowNodeFactory = new SmnDataFlowNodeFactory("Simple Data Source Factory", Collections.<String, String>emptyMap());
 
 		_dataFlowNodeFactoryInventory.addDataFlowNodeFactory(simpleDataFlowNodeFactory);
 	}

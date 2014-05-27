@@ -20,7 +20,7 @@ public class SimpleDataProvider<T> implements DataProvider<T> {
 		logger.fine("SimpleDataProvider: " + dataFlowNode);
 
 		_dataFlowNode = dataFlowNode;
-		_dataConsumers = new LinkedList<DataConsumer<T>>();
+		_dataConsumers = new LinkedList<>();
 	}
 
 	@Override
