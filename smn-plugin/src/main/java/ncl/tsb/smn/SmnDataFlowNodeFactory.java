@@ -8,12 +8,29 @@ import ncl.tsb.smn.dataflow.SmnDataProcessor;
 import ncl.tsb.smn.dataflow.SmnDataService;
 import ncl.tsb.smn.dataflow.SmnDataSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
+	public static final String SRC_INTERVAL = "Update Interval (seconds)";
+
+	public static final String SRC_DB_HOST = "Database Host";
+
+	public static final String SRC_DB_PORT = "Database Port";
+
+	public static final String SRC_DB_USER = "Database User";
+
+	public static final String SRC_DB_PASS = "Database Password";
+
+	public static final String SRC_DB_DATABASE = "Database Name";
+
+	public static final String SRC_DB_TABLE = "Database Table";
+
+	public static final String SRC_DB_COLUMN = "Column Name for Updates";
+
 	private final String _name;
 
 	private final Map<String, String> _properties;
@@ -51,7 +68,13 @@ public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
 
 	@Override
 	public <T extends DataFlowNode> List<String> getPropertyNames(final Class<T> dataFlowNodeClass, final Map<String, String> metaProperties) throws InvalidClassException, InvalidMetaPropertyException, MissingMetaPropertyException {
-		return Collections.emptyList();
+		final List<String> propertyNames = Collections.emptyList();
+
+		if (dataFlowNodeClass.isAssignableFrom(SmnDataSource.class)) {
+			propertyNames.addAll(Arrays.asList(SRC_INTERVAL, SRC_DB_HOST, SRC_DB_PORT, SRC_DB_USER, SRC_DB_PASS, SRC_DB_DATABASE, SRC_DB_TABLE, SRC_DB_COLUMN));
+		}
+
+		return propertyNames;
 	}
 
 	@SuppressWarnings("unchecked")

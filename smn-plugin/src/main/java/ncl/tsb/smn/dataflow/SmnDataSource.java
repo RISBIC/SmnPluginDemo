@@ -73,11 +73,11 @@ public class SmnDataSource implements DataSource {
 		}
 	}
 
-	public void dummyPublishData(final SmnRecord data) {
-		logger.info("SmnDataSource.dummyPublishData: " + data);
+	public void emit(final SmnRecord data) {
+		logger.info("SmnDataSource.emit: " + data);
 
-		history.add(data);
 		_dataProvider.produce(data);
+		history.add(data);
 	}
 
 	public List<SmnRecord> getHistory() {
@@ -87,7 +87,7 @@ public class SmnDataSource implements DataSource {
 	private void setupPeriodicTask() {
 		final Runnable beeper = new Runnable() {
 			public void run() {
-				dummyPublishData(SmnRecord.randomDummy());
+				emit(SmnRecord.randomDummy());
 			}
 		};
 

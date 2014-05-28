@@ -26,7 +26,7 @@ public class ChainTest {
 		smnDataProcessor.getDataProvider(SmnRecord.class).addDataConsumer(simpleDataService.getDataConsumer(SmnRecord.class));
 
 		for (final SmnRecord record : dummyData) {
-			simpleDataSource.dummyPublishData(record);
+			simpleDataSource.emit(record);
 		}
 
 		assertArrayEquals("Unexpected history at Source", dummyData, simpleDataSource.getHistory().toArray());
