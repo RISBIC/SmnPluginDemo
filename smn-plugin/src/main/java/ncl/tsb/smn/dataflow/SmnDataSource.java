@@ -15,6 +15,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class SmnDataSource implements DataSource {
@@ -28,6 +31,8 @@ public class SmnDataSource implements DataSource {
 
 	private List<SmnRecord> history = new ArrayList<>();
 
+	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
 	public SmnDataSource(String name, Map<String, String> properties) {
 		logger.info("SmnDataSource: " + name + ", " + properties);
 
@@ -35,6 +40,8 @@ public class SmnDataSource implements DataSource {
 		_properties = properties;
 
 		_dataProvider = new DirectProvider<>(this);
+
+		setupPeriodicTask();
 	}
 
 	@Override
@@ -75,5 +82,15 @@ public class SmnDataSource implements DataSource {
 
 	public List<SmnRecord> getHistory() {
 		return history;
+	}
+
+	private void setupPeriodicTask() {
+		final Runnable beeper = new Runnable() {
+			public void run() {
+				dummyPublishData(SmnRecord.randomDummy());
+			}
+		};
+
+		scheduler.scheduleAtFixedRate(beeper, 10, 10, TimeUnit.SECONDS);
 	}
 }

@@ -16,16 +16,18 @@ import com.arjuna.databroker.data.DataFlowNodeFactoryInventory;
 @Startup
 @Singleton
 public class SmnDataFlowNodeFactoriesSetup {
+	public static final String FACTORY_NAME = "SMN Data Flow Factory";
+
 	@PostConstruct
 	public void setup() {
-		DataFlowNodeFactory simpleDataFlowNodeFactory = new SmnDataFlowNodeFactory("Simple Data Source Factory", Collections.<String, String>emptyMap());
+		DataFlowNodeFactory simpleDataFlowNodeFactory = new SmnDataFlowNodeFactory(FACTORY_NAME, Collections.<String, String>emptyMap());
 
 		_dataFlowNodeFactoryInventory.addDataFlowNodeFactory(simpleDataFlowNodeFactory);
 	}
 
 	@PreDestroy
 	public void cleanup() {
-		_dataFlowNodeFactoryInventory.removeDataFlowNodeFactory("Simple Data Source Factory");
+		_dataFlowNodeFactoryInventory.removeDataFlowNodeFactory(FACTORY_NAME);
 	}
 
 	@EJB(lookup = "java:global/server-ear-1.0.0p1m1/control-core-1.0.0p1m1/DataFlowNodeFactoryInventory")
