@@ -32,7 +32,7 @@ public class SmnDataService implements DataService {
 
 	private static final Logger logger = Logger.getLogger(SmnDataService.class.getName());
 
-	public SmnDataService(String name, Map<String, String> properties) {
+	public SmnDataService(final String name, final Map<String, String> properties) {
 		logger.info("StringDataService: " + name + ", " + properties);
 
 		_name = name;
@@ -54,7 +54,7 @@ public class SmnDataService implements DataService {
 
 	@Override
 	public Collection<Class<?>> getDataConsumerDataClasses() {
-		Set<Class<?>> dataConsumerDataClasses = new HashSet<>();
+		final Set<Class<?>> dataConsumerDataClasses = new HashSet<>();
 
 		dataConsumerDataClasses.add(SmnRecord.class);
 
@@ -63,7 +63,7 @@ public class SmnDataService implements DataService {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> DataConsumer<T> getDataConsumer(Class<T> dataClass) {
+	public <T> DataConsumer<T> getDataConsumer(final Class<T> dataClass) {
 		if (dataClass == SmnRecord.class) {
 			return (DataConsumer<T>) _dataConsumer;
 		} else {
@@ -73,7 +73,7 @@ public class SmnDataService implements DataService {
 
 	@Override
 	public Collection<Class<?>> getDataProviderDataClasses() {
-		Set<Class<?>> dataProviderDataClasses = new HashSet<>();
+		final Set<Class<?>> dataProviderDataClasses = new HashSet<>();
 
 		dataProviderDataClasses.add(SmnRecord.class);
 
@@ -82,7 +82,7 @@ public class SmnDataService implements DataService {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> DataProvider<T> getDataProvider(Class<T> dataClass) {
+	public <T> DataProvider<T> getDataProvider(final Class<T> dataClass) {
 		if (dataClass == SmnRecord.class) {
 			return (DataProvider<T>) _dataProvider;
 		} else {
@@ -90,7 +90,7 @@ public class SmnDataService implements DataService {
 		}
 	}
 
-	public void export(SmnRecord data) {
+	public void export(final SmnRecord data) {
 		logger.info("SmnDataService.export: " + data);
 		history.add(data);
 	}

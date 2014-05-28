@@ -32,7 +32,7 @@ public class SmnDataProcessor implements DataProcessor {
 
 	private List<SmnRecord> history = new ArrayList<>();
 
-	public SmnDataProcessor(String name, Map<String, String> properties) {
+	public SmnDataProcessor(final String name, final Map<String, String> properties) {
 		logger.info("SmnDataProcessor: " + name + ", " + properties);
 
 		_name = name;
@@ -54,7 +54,7 @@ public class SmnDataProcessor implements DataProcessor {
 
 	@Override
 	public Collection<Class<?>> getDataConsumerDataClasses() {
-		Set<Class<?>> dataConsumerDataClasses = new HashSet<>();
+		final Set<Class<?>> dataConsumerDataClasses = new HashSet<>();
 
 		dataConsumerDataClasses.add(SmnRecord.class);
 
@@ -63,7 +63,7 @@ public class SmnDataProcessor implements DataProcessor {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> DataConsumer<T> getDataConsumer(Class<T> dataClass) {
+	public <T> DataConsumer<T> getDataConsumer(final Class<T> dataClass) {
 		if (dataClass == SmnRecord.class) {
 			return (DataConsumer<T>) _dataConsumer;
 		} else {
@@ -73,7 +73,7 @@ public class SmnDataProcessor implements DataProcessor {
 
 	@Override
 	public Collection<Class<?>> getDataProviderDataClasses() {
-		Set<Class<?>> dataProviderDataClasses = new HashSet<>();
+		final Set<Class<?>> dataProviderDataClasses = new HashSet<>();
 
 		dataProviderDataClasses.add(SmnRecord.class);
 
@@ -82,7 +82,7 @@ public class SmnDataProcessor implements DataProcessor {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> DataProvider<T> getDataProvider(Class<T> dataClass) {
+	public <T> DataProvider<T> getDataProvider(final Class<T> dataClass) {
 		if (dataClass == SmnRecord.class) {
 			return (DataProvider<T>) _dataProvider;
 		} else {
@@ -90,7 +90,7 @@ public class SmnDataProcessor implements DataProcessor {
 		}
 	}
 
-	public void process(SmnRecord data) {
+	public void process(final SmnRecord data) {
 		logger.info("SmnDataProcessor.process: " + data);
 
 		_dataProvider.produce(data);

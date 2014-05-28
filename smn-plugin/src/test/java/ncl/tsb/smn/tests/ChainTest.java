@@ -18,9 +18,9 @@ public class ChainTest {
 	public void connectedTest() {
 		final SmnRecord[] dummyData = generateTestData(5);
 
-		SmnDataSource simpleDataSource = new SmnDataSource("Simple Data Source", Collections.<String, String>emptyMap());
-		SmnDataProcessor smnDataProcessor = new SmnDataProcessor("Simple Data Processor", Collections.<String, String>emptyMap());
-		SmnDataService simpleDataService = new SmnDataService("Simple Data Service", Collections.<String, String>emptyMap());
+		final SmnDataSource simpleDataSource = new SmnDataSource("Simple Data Source", Collections.<String, String>emptyMap());
+		final SmnDataProcessor smnDataProcessor = new SmnDataProcessor("Simple Data Processor", Collections.<String, String>emptyMap());
+		final SmnDataService simpleDataService = new SmnDataService("Simple Data Service", Collections.<String, String>emptyMap());
 
 		simpleDataSource.getDataProvider(SmnRecord.class).addDataConsumer(smnDataProcessor.getDataConsumer(SmnRecord.class));
 		smnDataProcessor.getDataProvider(SmnRecord.class).addDataConsumer(simpleDataService.getDataConsumer(SmnRecord.class));
@@ -34,7 +34,7 @@ public class ChainTest {
 		assertArrayEquals("Unexpected history at Service", dummyData, simpleDataService.getHistory().toArray());
 	}
 
-	private SmnRecord[] generateTestData(int count) {
+	private SmnRecord[] generateTestData(final int count) {
 		final SmnRecord[] records = new SmnRecord[count];
 
 		for (int i = 0; i < count; i++) {

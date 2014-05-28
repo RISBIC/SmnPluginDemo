@@ -14,7 +14,11 @@ import java.util.logging.Logger;
 public class ReflectionConsumer<T> implements DataConsumer<T> {
 	private static final Logger logger = Logger.getLogger(ReflectionConsumer.class.getName());
 
-	public ReflectionConsumer(DataFlowNode dataFlowNode, Method method) {
+	private DataFlowNode _dataFlowNode;
+
+	private Method _method;
+
+	public ReflectionConsumer(final DataFlowNode dataFlowNode, final Method method) {
 		logger.fine("ReflectionConsumer: " + dataFlowNode + ", " + method);
 
 		_dataFlowNode = dataFlowNode;
@@ -27,15 +31,11 @@ public class ReflectionConsumer<T> implements DataConsumer<T> {
 	}
 
 	@Override
-	public void consume(DataProvider<T> dataProvider, T data) {
+	public void consume(final DataProvider<T> dataProvider, final T data) {
 		try {
 			_method.invoke(_dataFlowNode, data);
-		} catch (Throwable throwable) {
+		} catch (final Throwable throwable) {
 			logger.log(Level.WARNING, "Problem invoking consumer", throwable);
 		}
 	}
-
-	private DataFlowNode _dataFlowNode;
-
-	private Method _method;
 }

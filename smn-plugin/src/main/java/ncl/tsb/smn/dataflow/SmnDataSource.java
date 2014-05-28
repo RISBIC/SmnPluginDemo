@@ -33,7 +33,7 @@ public class SmnDataSource implements DataSource {
 
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-	public SmnDataSource(String name, Map<String, String> properties) {
+	public SmnDataSource(final String name, final Map<String, String> properties) {
 		logger.info("SmnDataSource: " + name + ", " + properties);
 
 		_name = name;
@@ -56,7 +56,7 @@ public class SmnDataSource implements DataSource {
 
 	@Override
 	public Collection<Class<?>> getDataProviderDataClasses() {
-		Set<Class<?>> dataProviderDataClasses = new HashSet<>();
+		final Set<Class<?>> dataProviderDataClasses = new HashSet<>();
 
 		dataProviderDataClasses.add(SmnRecord.class);
 
@@ -65,7 +65,7 @@ public class SmnDataSource implements DataSource {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> DataProvider<T> getDataProvider(Class<T> dataClass) {
+	public <T> DataProvider<T> getDataProvider(final Class<T> dataClass) {
 		if (dataClass == SmnRecord.class) {
 			return (DataProvider<T>) _dataProvider;
 		} else {
@@ -73,7 +73,7 @@ public class SmnDataSource implements DataSource {
 		}
 	}
 
-	public void dummyPublishData(SmnRecord data) {
+	public void dummyPublishData(final SmnRecord data) {
 		logger.info("SmnDataSource.dummyPublishData: " + data);
 
 		history.add(data);

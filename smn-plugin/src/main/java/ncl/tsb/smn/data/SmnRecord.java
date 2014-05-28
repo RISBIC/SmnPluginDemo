@@ -25,7 +25,7 @@ public class SmnRecord {
 
 	private final Long insertTime;
 
-	public SmnRecord(Long id, Integer classCode, Integer direction, Integer lane, Integer outstationId, Integer site, Integer speed, Long recordTime, Long insertTime) {
+	public SmnRecord(final Long id, final Integer classCode, final Integer direction, final Integer lane, final Integer outstationId, final Integer site, final Integer speed, final Long recordTime, final Long insertTime) {
 		this.id = id;
 		this.classCode = classCode;
 		this.direction = direction;
@@ -37,7 +37,7 @@ public class SmnRecord {
 		this.insertTime = insertTime;
 	}
 
-	public SmnRecord(ResultSet resultSet)
+	public SmnRecord(final ResultSet resultSet)
 	{
 		try {
 			this.id = resultSet.getLong("_id");
@@ -49,7 +49,7 @@ public class SmnRecord {
 			this.speed = resultSet.getInt("speed");
 			this.recordTime = resultSet.getLong("time");
 			this.insertTime = resultSet.getLong("inserttime");
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			throw new IllegalArgumentException("SQLException while building SmnRecord.", e);
 		}
 	}
@@ -115,7 +115,7 @@ public class SmnRecord {
 		return new SmnRecord(1L, r(1,4), r(0,1), r(0,5), r(1,129), 0, r(30,100), System.currentTimeMillis(), System.currentTimeMillis());
 	}
 
-	private static Integer r(Integer min, Integer max) {
+	private static Integer r(final Integer min, final Integer max) {
 		return (int) (min + (Math.random() * (max-min)));
 	}
 }

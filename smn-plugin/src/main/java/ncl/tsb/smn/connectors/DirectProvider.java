@@ -16,7 +16,11 @@ import java.util.logging.Logger;
 public class DirectProvider<T> implements DataProvider<T> {
 	private static final Logger logger = Logger.getLogger(DirectProvider.class.getName());
 
-	public DirectProvider(DataFlowNode dataFlowNode) {
+	private DataFlowNode _dataFlowNode;
+
+	private List<DataConsumer<T>> _dataConsumers;
+
+	public DirectProvider(final DataFlowNode dataFlowNode) {
 		logger.fine("DirectProvider: " + dataFlowNode);
 
 		_dataFlowNode = dataFlowNode;
@@ -34,23 +38,19 @@ public class DirectProvider<T> implements DataProvider<T> {
 	}
 
 	@Override
-	public void addDataConsumer(DataConsumer<T> dataConsumer) {
+	public void addDataConsumer(final DataConsumer<T> dataConsumer) {
 		_dataConsumers.add(dataConsumer);
 	}
 
 	@Override
-	public void removeDataConsumer(DataConsumer<T> dataConsumer) {
+	public void removeDataConsumer(final DataConsumer<T> dataConsumer) {
 		_dataConsumers.remove(dataConsumer);
 	}
 
 	@Override
-	public void produce(T data) {
-		for (DataConsumer<T> dataConsumer : _dataConsumers) {
+	public void produce(final T data) {
+		for (final DataConsumer<T> dataConsumer : _dataConsumers) {
 			dataConsumer.consume(this, data);
 		}
 	}
-
-	private DataFlowNode _dataFlowNode;
-
-	private List<DataConsumer<T>> _dataConsumers;
 }

@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
-	private String _name;
+	private final String _name;
 
-	private Map<String, String> _properties;
+	private final Map<String, String> _properties;
 
-	public SmnDataFlowNodeFactory(String name, Map<String, String> properties) {
+	public SmnDataFlowNodeFactory(final String name, final Map<String, String> properties) {
 		_name = name;
 		_properties = properties;
 	}
@@ -35,7 +35,7 @@ public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
 
 	@Override
 	public List<Class<? extends DataFlowNode>> getClasses() {
-		List<Class<? extends DataFlowNode>> classes = new LinkedList<>();
+		final List<Class<? extends DataFlowNode>> classes = new LinkedList<>();
 
 		classes.add(DataSource.class);
 		classes.add(DataProcessor.class);
@@ -45,18 +45,18 @@ public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
 	}
 
 	@Override
-	public <T extends DataFlowNode> List<String> getMetaPropertyNames(Class<T> dataFlowNodeClass) {
+	public <T extends DataFlowNode> List<String> getMetaPropertyNames(final Class<T> dataFlowNodeClass) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public <T extends DataFlowNode> List<String> getPropertyNames(Class<T> dataFlowNodeClass, Map<String, String> metaProperties) throws InvalidClassException, InvalidMetaPropertyException, MissingMetaPropertyException {
+	public <T extends DataFlowNode> List<String> getPropertyNames(final Class<T> dataFlowNodeClass, final Map<String, String> metaProperties) throws InvalidClassException, InvalidMetaPropertyException, MissingMetaPropertyException {
 		return Collections.emptyList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends DataFlowNode> T createDataFlowNode(String name, Class<T> dataFlowNodeClass, Map<String, String> metaProperties, Map<String, String> properties) throws InvalidNameException, InvalidPropertyException, MissingPropertyException {
+	public <T extends DataFlowNode> T createDataFlowNode(final String name, final Class<T> dataFlowNodeClass, final Map<String, String> metaProperties, final Map<String, String> properties) throws InvalidNameException, InvalidPropertyException, MissingPropertyException {
 		if (dataFlowNodeClass.isAssignableFrom(SmnDataSource.class)) {
 			return (T) new SmnDataSource(name, properties);
 		} else if (dataFlowNodeClass.isAssignableFrom(SmnDataProcessor.class)) {
