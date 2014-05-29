@@ -11,12 +11,11 @@
         <groupId>ncl.tsb</groupId>
         <artifactId>smn-plugin-parent</artifactId>
         <version>1.0.0p1m1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>smn-plugin-ear</artifactId>
-
     <packaging>ear</packaging>
-
     <name>Simple DataBroker Plugin EAR</name>
 
     <dependencies>
@@ -24,7 +23,6 @@
             <groupId>ncl.tsb</groupId>
             <artifactId>smn-plugin</artifactId>
             <version>1.0.0p1m1</version>
-            <scope>provided</scope>
             <type>ejb</type>
         </dependency>
     </dependencies>
@@ -35,7 +33,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-ear-plugin</artifactId>
                 <configuration>
-                    <includeLibInApplicationXml>true</includeLibInApplicationXml>
+                    <defaultLibBundleDir>lib/</defaultLibBundleDir>
                     <modules>
                         <ejbModule>
                             <groupId>ncl.tsb</groupId>
@@ -46,26 +44,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>jbossas</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jboss.as.plugins</groupId>
-                        <artifactId>jboss-as-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>deploy</goal>
-                                </goals>
-                            </execution>
-                       </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

@@ -10,11 +10,9 @@ import ncl.tsb.smn.connectors.DirectProvider;
 import ncl.tsb.smn.connectors.ReflectionConsumer;
 import ncl.tsb.smn.data.SmnRecord;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -30,15 +28,13 @@ public class SmnDataProcessor implements DataProcessor {
 
 	private DataProvider<SmnRecord> _dataProvider;
 
-	private List<SmnRecord> history = new ArrayList<>();
-
 	public SmnDataProcessor(final String name, final Map<String, String> properties) {
 		logger.info("SmnDataProcessor: " + name + ", " + properties);
 
 		_name = name;
 		_properties = properties;
 
-		_dataConsumer = new ReflectionConsumer<>(this, MethodUtil.getMethod(SmnDataProcessor.class, "process", SmnRecord.class));
+		_dataConsumer = new ReflectionConsumer<>(this, ReflectionConsumer.getMethod(SmnDataProcessor.class, "process", SmnRecord.class));
 		_dataProvider = new DirectProvider<>(this);
 	}
 
@@ -91,14 +87,13 @@ public class SmnDataProcessor implements DataProcessor {
 	}
 
 	public void process(final SmnRecord data) {
-		logger.info("SmnDataProcessor.process: " + data);
-
-		_dataProvider.produce(data);
-
-		history.add(data);
-	}
-
-	public List<SmnRecord> getHistory() {
-		return history;
+		if (data.getRecordTime() > System.currentTimeMillis())
+		{
+			logger.warning("SmnDataProcessor.process: INVALID: " + data);
+		}
+		else {
+			logger.info("SmnDataProcessor.process: VALID: " + data);
+			_dataProvider.produce(data);
+		}
 	}
 }

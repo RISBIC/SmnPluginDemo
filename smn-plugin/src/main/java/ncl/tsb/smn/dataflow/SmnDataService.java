@@ -6,15 +6,13 @@ package ncl.tsb.smn.dataflow;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataService;
-import ncl.tsb.smn.connectors.ReflectionConsumer;
 import ncl.tsb.smn.connectors.DirectProvider;
+import ncl.tsb.smn.connectors.ReflectionConsumer;
 import ncl.tsb.smn.data.SmnRecord;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -28,8 +26,6 @@ public class SmnDataService implements DataService {
 
 	private DataProvider<SmnRecord> _dataProvider;
 
-	private List<SmnRecord> history = new ArrayList<>();
-
 	private static final Logger logger = Logger.getLogger(SmnDataService.class.getName());
 
 	public SmnDataService(final String name, final Map<String, String> properties) {
@@ -38,7 +34,7 @@ public class SmnDataService implements DataService {
 		_name = name;
 		_properties = properties;
 
-		_dataConsumer = new ReflectionConsumer<>(this, MethodUtil.getMethod(SmnDataService.class, "export", SmnRecord.class));
+		_dataConsumer = new ReflectionConsumer<>(this, ReflectionConsumer.getMethod(SmnDataService.class, "export", SmnRecord.class));
 		_dataProvider = new DirectProvider<>(this);
 	}
 
@@ -91,11 +87,6 @@ public class SmnDataService implements DataService {
 	}
 
 	public void export(final SmnRecord data) {
-		logger.info("SmnDataService.export: " + data);
-		history.add(data);
-	}
-
-	public List<SmnRecord> getHistory() {
-		return history;
+		logger.info(String.format("SmnDataService.export: INSERT INTO dbdata VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", data.getId(), data.getClassCode(), data.getDirection(), data.getLane(), data.getOutstationId(), data.getSite(), data.getSpeed(), data.getRecordTime(), data.getInsertTime()));
 	}
 }

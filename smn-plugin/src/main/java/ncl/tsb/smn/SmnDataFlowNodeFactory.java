@@ -16,21 +16,42 @@ import java.util.List;
 import java.util.Map;
 
 public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
-	public static final String SRC_INTERVAL = "Update Interval (seconds)";
+	// SMN SOURCE PROPERTY NAMES
+	public static final String SOURCE_INTERVAL = "Update Interval (seconds)";
 
-	public static final String SRC_DB_HOST = "Database Host";
+	public static final String SOURCE_BATCH_SIZE = "Batch Size (rows)";
 
-	public static final String SRC_DB_PORT = "Database Port";
+	public static final String SOURCE_DB_HOST = "Database Host";
 
-	public static final String SRC_DB_USER = "Database User";
+	public static final String SOURCE_DB_PORT = "Database Port";
 
-	public static final String SRC_DB_PASS = "Database Password";
+	public static final String SOURCE_DB_USER = "Database User";
 
-	public static final String SRC_DB_DATABASE = "Database Name";
+	public static final String SOURCE_DB_PASS = "Database Password";
 
-	public static final String SRC_DB_TABLE = "Database Table";
+	public static final String SOURCE_DB_DATABASE = "Database Name";
 
-	public static final String SRC_DB_COLUMN = "Column Name for Updates";
+	public static final String SOURCE_DB_TABLE = "Database Table";
+
+	public static final String SOURCE_DB_COLUMN = "Column Name for Updates";
+
+
+	// SMN PROCESSOR PROPERTY NAMES
+	public static final String PROCESSOR_FIELD = "SMN Property to Validate";
+
+
+	// SMN DATA SERVICE PROPERTY NAMES
+	public static final String SERVICE_DB_HOST = "Database Host";
+
+	public static final String SERVICE_DB_PORT = "Database Port";
+
+	public static final String SERVICE_DB_USER = "Database User";
+
+	public static final String SERVICE_DB_PASS = "Database Password";
+
+	public static final String SERVICE_DB_DATABASE = "Database Name";
+
+	public static final String SERVICE_DB_TABLE = "Database Table";
 
 	private final String _name;
 
@@ -72,7 +93,11 @@ public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
 		final List<String> propertyNames = new ArrayList<>();
 
 		if (dataFlowNodeClass.isAssignableFrom(SmnDataSource.class)) {
-			propertyNames.addAll(Arrays.asList(SRC_INTERVAL, SRC_DB_HOST, SRC_DB_PORT, SRC_DB_USER, SRC_DB_PASS, SRC_DB_DATABASE, SRC_DB_TABLE, SRC_DB_COLUMN));
+			propertyNames.addAll(Arrays.asList(SOURCE_INTERVAL, SOURCE_BATCH_SIZE, SOURCE_DB_HOST, SOURCE_DB_PORT, SOURCE_DB_USER, SOURCE_DB_PASS, SOURCE_DB_DATABASE, SOURCE_DB_TABLE, SOURCE_DB_COLUMN));
+		} else if (dataFlowNodeClass.isAssignableFrom(SmnDataProcessor.class)) {
+			propertyNames.addAll(Arrays.asList(PROCESSOR_FIELD));
+		} else if (dataFlowNodeClass.isAssignableFrom(SmnDataService.class)) {
+			propertyNames.addAll(Arrays.asList(SERVICE_DB_HOST, SERVICE_DB_PORT, SERVICE_DB_USER, SERVICE_DB_PASS, SERVICE_DB_DATABASE, SERVICE_DB_TABLE));
 		}
 
 		return propertyNames;

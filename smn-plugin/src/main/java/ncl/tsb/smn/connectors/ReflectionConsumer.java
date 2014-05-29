@@ -38,4 +38,15 @@ public class ReflectionConsumer<T> implements DataConsumer<T> {
 			logger.log(Level.WARNING, "Problem invoking consumer", throwable);
 		}
 	}
+
+	// TODO: Update to Java 8 and replace this mechanism with lambdas.
+	public static Method getMethod(final Class<?> nodeClass, final String nodeMethodName, final Class<?> dataClass) {
+		try {
+			return nodeClass.getMethod(nodeMethodName, new Class[] { dataClass });
+		} catch (final Throwable throwable) {
+			logger.log(Level.WARNING, "Unable to find method \"" + nodeMethodName + "\"", throwable);
+
+			return null;
+		}
+	}
 }

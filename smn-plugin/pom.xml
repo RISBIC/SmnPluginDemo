@@ -11,19 +11,20 @@
         <groupId>ncl.tsb</groupId>
         <artifactId>smn-plugin-parent</artifactId>
         <version>1.0.0p1m1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
+
     <artifactId>smn-plugin</artifactId>
-
     <packaging>ejb</packaging>
-
     <name>SMN Databroker Plugin</name>
+
 
     <dependencies>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>17.0</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.3-1101-jdbc41</version>
         </dependency>
 
         <dependency>
