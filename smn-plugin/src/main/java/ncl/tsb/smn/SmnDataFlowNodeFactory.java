@@ -8,6 +8,7 @@ import ncl.tsb.smn.dataflow.SmnDataProcessor;
 import ncl.tsb.smn.dataflow.SmnDataService;
 import ncl.tsb.smn.dataflow.SmnDataSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -68,7 +69,7 @@ public class SmnDataFlowNodeFactory implements DataFlowNodeFactory {
 
 	@Override
 	public <T extends DataFlowNode> List<String> getPropertyNames(final Class<T> dataFlowNodeClass, final Map<String, String> metaProperties) throws InvalidClassException, InvalidMetaPropertyException, MissingMetaPropertyException {
-		final List<String> propertyNames = Collections.emptyList();
+		final List<String> propertyNames = new ArrayList<>();
 
 		if (dataFlowNodeClass.isAssignableFrom(SmnDataSource.class)) {
 			propertyNames.addAll(Arrays.asList(SRC_INTERVAL, SRC_DB_HOST, SRC_DB_PORT, SRC_DB_USER, SRC_DB_PASS, SRC_DB_DATABASE, SRC_DB_TABLE, SRC_DB_COLUMN));
