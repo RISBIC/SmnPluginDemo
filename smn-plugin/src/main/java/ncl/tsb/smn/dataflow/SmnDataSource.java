@@ -5,6 +5,8 @@ package ncl.tsb.smn.dataflow;
 
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
+import com.google.common.base.Strings;
+import com.google.common.primitives.Longs;
 import ncl.tsb.smn.connectors.DirectProvider;
 import ncl.tsb.smn.data.SmnRecord;
 
@@ -96,28 +98,30 @@ public class SmnDataSource implements DataSource {
 		final String databaseColumn = getProperty(SOURCE_DB_COLUMN, "inserttime");
 
 		try {
-			String url = String.format("jdbc:postgresql://%s:%s/%s?user=%s&password=%s&ssl=true", databaseHost, databasePort, databaseDB, databaseUser, databasePass);
-			final Connection conn = DriverManager.getConnection(url);
+			String connectionURL = String.format("jdbc:postgresql://%s:%s/%s?user=%s&password=%s&ssl=true", databaseHost, databasePort, databaseDB, databaseUser, databasePass);
+			logger.info(String.format("Connection URL: [%s]", connectionURL));
+			final Connection conn = DriverManager.getConnection(connectionURL);
 
 			final Runnable beeper = new Runnable() {
-				private long insertTime = 0L;
+				// Seed it as low as possible
+				private long insertTime = Long.MIN_VALUE;
 
 				public void run() {
 					try {
 						String query;
 
-						if (insertTime == 0L) {
+						if (insertTime == Long.MIN_VALUE) {
 							query = String.format("SELECT * FROM %s ORDER BY %s ASC LIMIT %s", databaseTable, databaseColumn, batchSize);
 						} else {
 							query = String.format("SELECT * FROM %s WHERE %s > %s ORDER BY %s ASC LIMIT %s", databaseTable, databaseColumn, insertTime, databaseColumn, batchSize);
 						}
 
-						logger.info("Executing SQL: " + query);
+						logger.info(String.format("SQL: [%s]", query));
 						final ResultSet resultSet = conn.createStatement().executeQuery(query);
 
 						while (resultSet.next()) {
 							// keep track of the greatest value
-							insertTime = max(insertTime, resultSet.getLong(databaseColumn));
+							insertTime = Longs.max(insertTime, resultSet.getLong(databaseColumn));
 
 							emit(new SmnRecord(resultSet));
 						}
@@ -136,22 +140,10 @@ public class SmnDataSource implements DataSource {
 	}
 
 	private String getProperty(final String key, final String defaultValue) {
-		if (_properties.get(key) == null || "".equals(_properties.get(key).trim())) {
+		if (Strings.isNullOrEmpty(_properties.get(key))) {
 			return defaultValue;
 		}
 
 		return _properties.get(key);
-	}
-
-	private long max(final long... longs) {
-		long result = longs[0];
-
-		for(int i = 1; i < longs.length; i++) {
-			if (longs[i] > result) {
-				result = longs[i];
-			}
-		}
-
-		return result;
 	}
 }
