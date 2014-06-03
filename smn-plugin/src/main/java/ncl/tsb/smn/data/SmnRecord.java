@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2014, Newcastle University, Newcastle-upon-Tyne, England. All rights reserved.
+ */
 package ncl.tsb.smn.data;
 
 import java.sql.ResultSet;
@@ -37,8 +40,7 @@ public class SmnRecord {
 		this.insertTime = insertTime;
 	}
 
-	public SmnRecord(final ResultSet resultSet)
-	{
+	public SmnRecord(final ResultSet resultSet) {
 		try {
 			this.id = resultSet.getLong("_id");
 			this.classCode = resultSet.getInt("classcode");
@@ -109,13 +111,14 @@ public class SmnRecord {
 
 	/**
 	 * Generate a dummy SMN Record with randomised data
+	 *
 	 * @return An instance of SmnRecord with randomised fields.
 	 */
 	public static SmnRecord randomDummy() {
-		return new SmnRecord(1L, r(1,4), r(0,1), r(0,5), r(1,129), 0, r(30,100), System.currentTimeMillis(), System.currentTimeMillis());
+		return new SmnRecord(1L, r(1, 4), r(0, 1), r(0, 5), r(1, 129), 0, r(30, 100), System.currentTimeMillis(), System.currentTimeMillis());
 	}
 
 	private static Integer r(final Integer min, final Integer max) {
-		return (int) (min + (Math.random() * (max-min)));
+		return (int) (min + (Math.random() * (max - min)));
 	}
 }

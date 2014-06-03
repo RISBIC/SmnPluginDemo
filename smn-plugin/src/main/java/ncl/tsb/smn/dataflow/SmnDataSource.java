@@ -84,32 +84,41 @@ public class SmnDataSource implements DataSource {
 	}
 
 	private void setupDatabaseScan() {
+		// Which DB server to connect to
 		final String databaseHost = getProperty(SOURCE_DB_HOST, "localhost");
 		final String databasePort = getProperty(SOURCE_DB_PORT, "5432");
 		final String databaseDB = getProperty(SOURCE_DB_DATABASE, "smn");
 
+		// Credentials to connect to the DB Server
 		final String databaseUser = getProperty(SOURCE_DB_USER, "smn");
 		final String databasePass = getProperty(SOURCE_DB_PASS, "smn");
 
-		final Integer updateFrequency = Integer.valueOf(getProperty(SOURCE_INTERVAL, "30"));
-		final Integer batchSize = Integer.valueOf(getProperty(SOURCE_BATCH_SIZE, "100"));
-
+		// Table and column to scan for updates
 		final String databaseTable = getProperty(SOURCE_DB_TABLE, "dbdata");
 		final String databaseColumn = getProperty(SOURCE_DB_COLUMN, "inserttime");
 
+		// How often (and how much) to update
+		final Integer updateFrequency = Integer.valueOf(getProperty(SOURCE_INTERVAL, "30"));
+		final Integer batchSize = Integer.valueOf(getProperty(SOURCE_BATCH_SIZE, "100"));
+
+
 		try {
+			// Connect to the database
 			String connectionURL = String.format("jdbc:postgresql://%s:%s/%s?user=%s&password=%s&ssl=true", databaseHost, databasePort, databaseDB, databaseUser, databasePass);
-			logger.info(String.format("Connection URL: [%s]", connectionURL));
 			final Connection conn = DriverManager.getConnection(connectionURL);
 
-			final Runnable beeper = new Runnable() {
-				// Seed it as low as possible
+			logger.info(String.format("Connection URL: [%s]", connectionURL));
+
+			// Create the task to be periodically run
+			final Runnable updateScanner = new Runnable() {
+				// Keep track of the most recent record seen (so we can ask only for newer ones)
 				private long insertTime = Long.MIN_VALUE;
 
 				public void run() {
 					try {
 						String query;
 
+						// Are we checking for the first time or a repeat? (changes the logic)
 						if (insertTime == Long.MIN_VALUE) {
 							query = String.format("SELECT * FROM %s ORDER BY %s ASC LIMIT %s", databaseTable, databaseColumn, batchSize);
 						} else {
@@ -119,26 +128,29 @@ public class SmnDataSource implements DataSource {
 						logger.info(String.format("SQL: [%s]", query));
 						final ResultSet resultSet = conn.createStatement().executeQuery(query);
 
+						// Churn through the results and push each one out of the Data Source
 						while (resultSet.next()) {
-							// keep track of the greatest value
+							// keep track of the newest value seen (for update scanning)
 							insertTime = Longs.max(insertTime, resultSet.getLong(databaseColumn));
 
 							emit(new SmnRecord(resultSet));
 						}
 					} catch (SQLException e) {
-						logger.warning("SQL Exception while querying for SMN updates");
+						logger.warning("Could not query for updates.");
 						e.printStackTrace();
 					}
 				}
 			};
 
-			scheduler.scheduleAtFixedRate(beeper, updateFrequency, updateFrequency, TimeUnit.SECONDS);
+			// Set the task to periodically scan
+			scheduler.scheduleAtFixedRate(updateScanner, updateFrequency, updateFrequency, TimeUnit.SECONDS);
 		} catch (SQLException e) {
-			logger.warning("SQL Exception: " + e.getLocalizedMessage() + ", " + e.getSQLState());
+			logger.warning("Could not establish JDBC connection.");
 			e.printStackTrace();
 		}
 	}
 
+	// Helper method to get a property or provide some default value
 	private String getProperty(final String key, final String defaultValue) {
 		if (Strings.isNullOrEmpty(_properties.get(key))) {
 			return defaultValue;
